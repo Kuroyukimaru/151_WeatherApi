@@ -7,109 +7,139 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <style>
+        /* 🌤️ Background lembut terang ke gelap */
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(to right, #89f7fe, #66a6ff);
-            color: #222;
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(to bottom right, #d8e6ec, #7fa1b3, #243845);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 40px 20px;
+            justify-content: center;
+            color: #2c3e50;
         }
 
+        /* 🌈 Judul */
         h1 {
-            font-size: 28px;
-            color: #003366;
+            font-size: 2.2rem;
             display: flex;
             align-items: center;
             gap: 10px;
+            color: #ffffff;
             margin-bottom: 25px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
-        .search-container {
+        h1::before {
+            content: "🌤️";
+            font-size: 1.8rem;
+        }
+
+        /* 📦 Card hasil */
+        .container {
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 18px;
+            padding: 30px 35px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease;
+        }
+
+        /* 🔍 Input + Tombol dalam satu baris */
+        .search-box {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         input {
-            padding: 10px;
-            width: 250px;
-            border-radius: 8px;
-            border: 1px solid #aaa;
-            font-size: 14px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            outline: none;
+            width: 70%;
+            font-size: 1rem;
+            transition: 0.3s;
+            background: #f8fbfd;
+        }
+
+        input:focus {
+            border-color: #6da9c2;
+            box-shadow: 0 0 8px rgba(109, 169, 194, 0.5);
         }
 
         button {
-            padding: 10px 15px;
+            background: linear-gradient(to right, #5a7d8e, #3d5661);
+            color: #fff;
             border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 8px;
+            border-radius: 10px;
+            padding: 10px 15px;
             cursor: pointer;
-            font-size: 14px;
+            font-weight: 500;
+            transition: 0.3s;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background: linear-gradient(to right, #6b93a8, #32464f);
+            transform: scale(1.05);
         }
 
-        #hasil {
-            background-color: white;
-            padding: 20px 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            width: 320px;
-            text-align: left;
-        }
-
+        /* 🧊 Garis dan teks */
         hr {
-            border: 1px solid #ddd;
-            margin: 10px 0;
+            border: none;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 15px 0;
         }
 
         h2, h3 {
-            color: #004080;
-            margin-bottom: 8px;
+            color: #32485b;
+            margin-bottom: 10px;
+        }
+
+        #hasil {
             margin-top: 10px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        #hasil img {
+            vertical-align: middle;
+            width: 45px;
         }
 
         p {
-            margin: 5px 0;
-            line-height: 1.4;
+            margin: 6px 0;
+            font-size: 0.95rem;
         }
 
-        img {
-            vertical-align: middle;
-        }
-
-        .section-title {
-            font-weight: bold;
-            color: #004080;
-        }
-
-        .emoji {
-            font-size: 20px;
-            margin-right: 5px;
+        /* 🌟 Animasi lembut */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <h1>🌤️ Cek Cuaca</h1>
+    <h1>Cek Cuaca</h1>
 
-    <div class="search-container">
-        <input type="text" id="inputLokasi" placeholder="Masukkan nama kota...">
-        <button id="btnCari">Cari Cuaca</button>
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="inputLokasi" placeholder="Masukkan nama kota...">
+            <button id="btnCari">Cari Cuaca</button>
+        </div>
+
+        <hr>
+
+        <div id="hasil"></div>
     </div>
-
-    <div id="hasil"></div>
 
     <script>
         const apiKey = "acd9144a98594873b9673516250710";
@@ -135,106 +165,24 @@
                     let lon = data.location.lon;
 
                     document.getElementById("hasil").innerHTML = `
-                        <h2>📍 ${kota}</h2>
+                        <h2>📍 Lokasi: ${kota}</h2>
                         <hr>
-                        <h3>🌡️ Cuaca Sekarang</h3>
-                        <p><img src="${ikon}" alt="icon cuaca"> ${kondisi}</p>
-                        <p>Suhu (Celsius): <b>${suhuC} °C</b></p>
-                        <p>Suhu (Fahrenheit): <b>${suhuF} °F</b></p>
-                        <p>Kelembapan: <b>${kelembapan}%</b></p>
-                        <hr>
-                        <h3>🗺️ Detail Lokasi</h3>
-                        <p>Negara: ${negara}</p>
-                        <p>Provinsi: ${provinsi}</p>
-                        <p>Kota: ${kota}</p>
-                        <p>Latitude: ${lat}</p>
-                        <p>Longitude: ${lon}</p>
-                    `;
-                },
-                error: function () {
-                    document.getElementById("hasil").innerHTML = `<p style="color:red;">❌ Lokasi tidak ditemukan. Coba nama kota lain.</p>`;
-                }
-            });
-        }
-
-        document.getElementById("btnCari").addEventListener("click", function () {
-            const kota = document.getElementById("inputLokasi").value.trim();
-            if (kota === "") {
-                alert("Masukkan nama kota terlebih dahulu!");
-                return;
-            }
-            cariCuaca(kota);
-        });
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cek Cuaca</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-</head>
-<body>
-
-    <h1>Cek Cuaca</h1>
-
-    <div>
-        <input type="text" id="inputLokasi" placeholder="Masukkan nama kota...">
-        <button id="btnCari">Cari Cuaca</button>
-    </div>
-
-    <hr>
-
-    <div id="hasil"></div>
-
-     <script>
-        const apiKey = "acd9144a98594873b9673516250710";
-
-        function cariCuaca(kota) {
-            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${kota}&aqi=no`;
-            
-             $.ajax({
-                url: url,
-                method: "GET",
-                success: function (data) {
-                    let suhuC = data.current.temp_c;
-                    let suhuF = data.current.temp_f;
-                    let kelembapan = data.current.humidity;
-
-                    let kondisi = data.current.condition.text;
-                    let ikon = data.current.condition.icon;
-                    
-                    let negara = data.location.country;
-                    let provinsi = data.location.region;
-                    let kota = data.location.name;
-                    let lat = data.location.lat;
-                    let lon = data.location.lon;
-
-                    ment.getElementById("hasil").innerHTML = `
-                        <h2>Lokasi: ${kota}</h2>
-                        <hr>
-                        <h3>Cuaca Sekarang</h3>
+                        <h3>🌤️ Cuaca Sekarang</h3>
                         <p><img src="${ikon}" alt="icon cuaca"> ${kondisi}</p>
                         <p>Suhu (Celsius): ${suhuC} °C</p>
                         <p>Suhu (Fahrenheit): ${suhuF} °F</p>
                         <p>Kelembapan: ${kelembapan}%</p>
                         <hr>
-                        <h3>Detail Lokasi</h3>
+                        <h3>🌍 Detail Lokasi</h3>
                         <p>Negara: ${negara}</p>
                         <p>Provinsi: ${provinsi}</p>
-                        <p>Kota: ${kota}</p>
                         <p>Latitude: ${lat}</p>
                         <p>Longitude: ${lon}</p>
                     `;
                 },
-
-                 error: function () {
+                error: function () {
                     document.getElementById("hasil").innerHTML = `
-                        <p style="color:red;">Lokasi tidak ditemukan. Coba nama kota lain.</p>
+                        <p style="color:#c0392b;">❌ Lokasi tidak ditemukan. Coba nama kota lain.</p>
                     `;
                 }
             });
