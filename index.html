@@ -231,3 +231,11 @@
                         <p>Longitude: ${lon}</p>
                     `;
                 },
+
+                 error: function () {
+                    document.getElementById("hasil").innerHTML = `
+                        <p style="color:red;">Lokasi tidak ditemukan. Coba nama kota lain.</p>
+                    `;
+                }
+            });
+        }
