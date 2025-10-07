@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Cuaca</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(to right, #89f7fe, #66a6ff);
+            color: #222;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #003366;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 8px;
+            border: 1px solid #aaa;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #hasil {
+            background-color: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 320px;
+            text-align: left;
+        }
+
+        hr {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+
+        h2, h3 {
+            color: #004080;
+            margin-bottom: 8px;
+            margin-top: 10px;
+        }
+
+        p {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+
+        img {
+            vertical-align: middle;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #004080;
+        }
+
+        .emoji {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌤️ Cek Cuaca</h1>
+
+    <div class="search-container">
+        <input type="text" id="inputLokasi" placeholder="Masukkan nama kota...">
+        <button id="btnCari">Cari Cuaca</button>
+    </div>
+
+    <div id="hasil"></div>
+
+    <script>
+        const apiKey = "acd9144a98594873b9673516250710";
+
+        function cariCuaca(kota) {
+            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${kota}&aqi=no`;
+
+            $.ajax({
+                url: url,
+                method: "GET",
+                success: function (data) {
+                    let suhuC = data.current.temp_c;
+                    let suhuF = data.current.temp_f;
+                    let kelembapan = data.current.humidity;
+
+                    let kondisi = data.current.condition.text;
+                    let ikon = data.current.condition.icon;
+
+                    let negara = data.location.country;
+                    let provinsi = data.location.region;
+                    let kota = data.location.name;
+                    let lat = data.location.lat;
+                    let lon = data.location.lon;
+
+                    document.getElementById("hasil").innerHTML = `
+                        <h2>📍 ${kota}</h2>
+                        <hr>
+                        <h3>🌡️ Cuaca Sekarang</h3>
+                        <p><img src="${ikon}" alt="icon cuaca"> ${kondisi}</p>
+                        <p>Suhu (Celsius): <b>${suhuC} °C</b></p>
+                        <p>Suhu (Fahrenheit): <b>${suhuF} °F</b></p>
+                        <p>Kelembapan: <b>${kelembapan}%</b></p>
+                        <hr>
+                        <h3>🗺️ Detail Lokasi</h3>
+                        <p>Negara: ${negara}</p>
+                        <p>Provinsi: ${provinsi}</p>
+                        <p>Kota: ${kota}</p>
+                        <p>Latitude: ${lat}</p>
+                        <p>Longitude: ${lon}</p>
+                    `;
+                },
+                error: function () {
+                    document.getElementById("hasil").innerHTML = `<p style="color:red;">❌ Lokasi tidak ditemukan. Coba nama kota lain.</p>`;
+                }
+            });
+        }
+
+        document.getElementById("btnCari").addEventListener("click", function () {
+            const kota = document.getElementById("inputLokasi").value.trim();
+            if (kota === "") {
+                alert("Masukkan nama kota terlebih dahulu!");
+                return;
+            }
+            cariCuaca(kota);
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Cuaca</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+    <h1>Cek Cuaca</h1>
+
+    <div>
+        <input type="text" id="inputLokasi" placeholder="Masukkan nama kota...">
+        <button id="btnCari">Cari Cuaca</button>
+    </div>
+
+    <hr>
+
+    <div id="hasil"></div>
