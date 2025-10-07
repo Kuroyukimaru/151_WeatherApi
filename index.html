@@ -239,3 +239,16 @@
                 }
             });
         }
+
+        document.getElementById("btnCari").addEventListener("click", function () {
+            const kota = document.getElementById("inputLokasi").value.trim();
+            if (kota === "") {
+                alert("Masukkan nama kota terlebih dahulu!");
+                return;
+            }
+            cariCuaca(kota);
+        });
+    </script>
+
+</body>
+</html>
