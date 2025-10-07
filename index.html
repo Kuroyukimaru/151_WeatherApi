@@ -214,3 +214,20 @@
                     let lat = data.location.lat;
                     let lon = data.location.lon;
 
+                    ment.getElementById("hasil").innerHTML = `
+                        <h2>Lokasi: ${kota}</h2>
+                        <hr>
+                        <h3>Cuaca Sekarang</h3>
+                        <p><img src="${ikon}" alt="icon cuaca"> ${kondisi}</p>
+                        <p>Suhu (Celsius): ${suhuC} °C</p>
+                        <p>Suhu (Fahrenheit): ${suhuF} °F</p>
+                        <p>Kelembapan: ${kelembapan}%</p>
+                        <hr>
+                        <h3>Detail Lokasi</h3>
+                        <p>Negara: ${negara}</p>
+                        <p>Provinsi: ${provinsi}</p>
+                        <p>Kota: ${kota}</p>
+                        <p>Latitude: ${lat}</p>
+                        <p>Longitude: ${lon}</p>
+                    `;
+                },
