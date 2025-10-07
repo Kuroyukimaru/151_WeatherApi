@@ -190,3 +190,10 @@
     <hr>
 
     <div id="hasil"></div>
+
+     <script>
+        const apiKey = "acd9144a98594873b9673516250710";
+
+        function cariCuaca(kota) {
+            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${kota}&aqi=no`;
+            
