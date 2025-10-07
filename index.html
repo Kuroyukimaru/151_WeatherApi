@@ -197,3 +197,10 @@
         function cariCuaca(kota) {
             const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${kota}&aqi=no`;
             
+             $.ajax({
+                url: url,
+                method: "GET",
+                success: function (data) {
+                    let suhuC = data.current.temp_c;
+                    let suhuF = data.current.temp_f;
+                    let kelembapan = data.current.humidity;
